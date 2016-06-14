@@ -32,9 +32,18 @@ public class UrlResource {
   @Path("api/v1/short")
   public String makeShort(String url) {
     checkNotNull(url, "URL could not be NULL.");
-    UrlRecord fullUrl = new UrlRecord("", url);
+    UrlRecord fullUrl = new UrlRecord(getShortUrlId(), url);
     UrlRecord shortUrl = dao.saveOrUpdate(fullUrl);
-    return String.valueOf(shortUrl.getId());
+    //return String.valueOf(shortUrl.getId());
+    return String.valueOf(shortUrl.getShortUrl());
+  }
+  private String getShortUrlId(){
+    StringBuffer shortUrlId = new StringBuffer();
+    for (int i = 0; i < 6; i++) {
+      int rand = 'a' + (int)(('z' - 'a' + 1) * Math.random());
+      shortUrlId.append((char) rand);
+    }
+    return shortUrlId.toString();
   }
 
   @GET
@@ -47,10 +56,10 @@ public class UrlResource {
   @UnitOfWork
   @Path("{id}")
   public Response getFull(
-      @PathParam("id") Long recordId) {
+      @PathParam("id") String shortUrl) {
 
-    checkNotNull(recordId, "RECORD_ID could not be NULL.");
-    UrlRecord urlRecord = dao.get(recordId);
+    checkNotNull(shortUrl, "RECORD_ID could not be NULL.");
+    UrlRecord urlRecord = dao.getByShortUrl(shortUrl);
     if (urlRecord == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
