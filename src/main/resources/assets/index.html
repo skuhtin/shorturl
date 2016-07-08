@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/html/bootstrap.min.css" type="text/css">
   <script src="/html/angular.min.js"></script>
   <script>
+
     angular.module('shortApp', [])
         .controller('UrlCtrl', function ($http, $scope) {
           $scope.fullUrl = ''
@@ -16,7 +17,7 @@
             if ($scope.fullUrl.length > 0){
               $http.post('/api/v1/short', $scope.fullUrl)
                   .success(function(data) {
-                    $scope.shortUrl = data;
+                    $scope.shortUrl = data.shUrl;
                   });
             }
           }

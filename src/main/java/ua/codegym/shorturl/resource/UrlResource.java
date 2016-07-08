@@ -35,7 +35,10 @@ public class UrlResource {
     UrlRecord fullUrl = new UrlRecord(getShortUrlId(), url);
     UrlRecord shortUrl = dao.saveOrUpdate(fullUrl);
     //return String.valueOf(shortUrl.getId());
-    return String.valueOf(shortUrl.getShortUrl());
+    String getShortUrl = String.valueOf(shortUrl.getShortUrl());
+    String varName = "shUrl";
+    String jsonResponse = "{" + "\"" + varName +"\"" + ":" +"\"" + getShortUrl +"\""+ "}";
+    return jsonResponse;
   }
   private String getShortUrlId(){
     StringBuffer shortUrlId = new StringBuffer();
