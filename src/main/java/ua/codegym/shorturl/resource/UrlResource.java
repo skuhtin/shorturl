@@ -34,7 +34,6 @@ public class UrlResource {
     checkNotNull(url, "URL could not be NULL.");
     UrlRecord fullUrl = new UrlRecord(getShortUrlId(), url);
     UrlRecord shortUrl = dao.saveOrUpdate(fullUrl);
-    //return String.valueOf(shortUrl.getId());
     String getShortUrl = String.valueOf(shortUrl.getShortUrl());
     String varName = "shUrl";
     String jsonResponse = "{" + "\"" + varName +"\"" + ":" +"\"" + getShortUrl +"\""+ "}";
@@ -60,15 +59,12 @@ public class UrlResource {
   @Path("{id}")
   public Response getFull(
       @PathParam("id") String shortUrl) {
-
     checkNotNull(shortUrl, "RECORD_ID could not be NULL.");
     UrlRecord urlRecord = dao.getByShortUrl(shortUrl);
     if (urlRecord == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
-
     String fullUrl = urlRecord.getFullUrl();
-
     return Response.seeOther(URI.create(fullUrl)).build();
   }
 }
